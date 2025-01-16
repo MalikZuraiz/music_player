@@ -16,15 +16,13 @@ void onSearchChanged(String value) {
 }
   void onPlaylistTap(String playlistId) {
 
-    // Implement your logic here
-
+Get.toNamed('/playlist-screen');
     print('Playlist tapped: $playlistId');
 
   }
    void onSongTap(String songId) {
 
-    // Implement your logic here
-
+Get.toNamed('/player-screen');
     print('Song tapped: $songId');
 
   }
