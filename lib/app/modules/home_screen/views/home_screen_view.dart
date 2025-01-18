@@ -1,69 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:music_player/Widgets/featured_playlists_view.dart';
-import 'package:music_player/Widgets/song_listview.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import '../controllers/home_screen_controller.dart';
 
 class HomeScreenView extends GetView<HomeScreenController> {
   HomeScreenView({super.key});
-
-  // Dummy data for playlists
-  final List<Map<String, String>> albums = [
-    {
-      "title": "R&B Playlist",
-      "subtitle": "Chill your mind",
-      "imagePath": "assets/1.png"
-    },
-    {
-      "title": "Daily Mix 2",
-      "subtitle": "Made for you",
-      "imagePath": "assets/2.png"
-    },
-    {
-      "title": "R&B Playlist",
-      "subtitle": "Chill your mind",
-      "imagePath": "assets/1.png"
-    },
-    {
-      "title": "Daily Mix 2",
-      "subtitle": "Made for you",
-      "imagePath": "assets/2.png"
-    },
-  ];
-
-  // Dummy data for favorite songs
-  final List<Map<String, String>> favoriteSongs = [
-    {
-      "title": "Bye Bye",
-      "artist": "Marshmello, Juice WRLD",
-      "duration": "2:09",
-      "imagePath": "assets/1.png"
-    },
-    {
-      "title": "I Like You",
-      "artist": "Post Malone, Doja Cat",
-      "duration": "4:03",
-      "imagePath": "assets/1.png"
-    },
-    {
-      "title": "Fountains",
-      "artist": "Drake, Tems",
-      "duration": "3:18",
-      "imagePath": "assets/4.png"
-    },
-    {
-      "title": "I Like You",
-      "artist": "Post Malone, Doja Cat",
-      "duration": "4:03",
-      "imagePath": "assets/2.png"
-    },
-    {
-      "title": "Fountains",
-      "artist": "Drake, Tems",
-      "duration": "3:18",
-      "imagePath": "assets/3.png"
-    },
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -72,38 +13,51 @@ class HomeScreenView extends GetView<HomeScreenController> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            _buildWelcomeText(),
-            const SizedBox(height: 16),
-            _buildSearchBar(),
-            const SizedBox(height: 24),
-            // Featured Playlist Section
-            FeaturedPlaylistsView(
-              albums: albums,
-              onPlaylistTap: (playlistTitle) {
-                controller.onPlaylistTap(playlistTitle);
-              },
-            ),
-            const SizedBox(height: 10),
-            // Song List Section
-            const Text(
-              'Your favourites',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildWelcomeText(),
+              const SizedBox(height: 16),
+              _buildSearchBar(),
+              const SizedBox(height: 24),
+              Obx(() {
+                // Display songs from searchResults
+                if (controller.searchResults.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      'No songs found.',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  );
+                }
 
-            SongListView(
-              songs: favoriteSongs,
-              onSongTap: (songTitle) {
-                controller.onSongTap(songTitle);
-              },
-            ),
-          ]),
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: controller.searchResults.length,
+                  itemBuilder: (context, index) {
+                    final song = controller.searchResults[index];
+                    return ListTile(
+                      leading: QueryArtworkWidget(
+                        id: song.id,
+                        type: ArtworkType.AUDIO,
+                        nullArtworkWidget: const Icon(Icons.music_note, color: Colors.white),
+                      ),
+                      title: Text(
+                        song.title ?? "Unknown Title",
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      subtitle: Text(
+                        song.artist ?? "Unknown Artist",
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                      onTap: () => controller.onSongTap(song),
+                    );
+                  },
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );
@@ -136,7 +90,7 @@ class HomeScreenView extends GetView<HomeScreenController> {
       decoration: InputDecoration(
         hintText: 'Search song, playlist, artist...',
         hintStyle: const TextStyle(fontSize: 16, color: Colors.grey),
-        prefixIcon: const Icon(Icons.search),
+        prefixIcon: const Icon(Icons.search, color: Colors.grey),
         filled: true,
         fillColor: Colors.grey[900]?.withOpacity(0.8),
         border: OutlineInputBorder(
