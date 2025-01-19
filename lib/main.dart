@@ -4,8 +4,7 @@ import 'package:music_player/app/routes/app_pages.dart';
 import 'package:music_player/app/service/song_data_controller.dart';
 
 void main() {
-  final SongDataController songDataController = Get.put(SongDataController());
-  songDataController.fetchSongs();
+  Get.put(SongDataController());
   runApp(const MainApp());
 }
 
@@ -20,7 +19,6 @@ class MainApp extends StatelessWidget {
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       // theme: AppTheme.darkTheme,
-
     );
   }
 }

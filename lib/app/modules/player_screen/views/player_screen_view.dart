@@ -75,46 +75,41 @@ class PlayerScreenView extends GetView<PlayerScreenController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Obx(() {
-                  final currentSong =
-                      controller.allSongs[controller.songIndex.value];
+                  final currentSong = controller.allSongs[controller.songIndex.value];
                   return Text(
-                    currentSong.title ?? "Unknown Title",
+                    currentSong.title,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
-                    maxLines: 2, // Limit to two lines
-                    overflow: TextOverflow
-                        .ellipsis, // Add ellipsis when text overflows
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   );
                 }),
                 const SizedBox(height: 4),
                 Obx(() {
-                  final currentSong =
-                      controller.allSongs[controller.songIndex.value];
+                  final currentSong = controller.allSongs[controller.songIndex.value];
                   return Text(
                     currentSong.artist ?? "Unknown Artist",
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.7),
                       fontSize: 15,
                     ),
-                    maxLines: 2, // Limit to two lines
-                    overflow: TextOverflow
-                        .ellipsis, // Add ellipsis when text overflows
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   );
                 }),
               ],
             ),
             Obx(() {
-              final currentSong =
-                  controller.allSongs[controller.songIndex.value];
+              final currentSong = controller.allSongs[controller.songIndex.value];
               return IconButton(
                 icon: Icon(
-                  controller.favoriteSongs.contains(currentSong.id)
+                  controller.isFavorite()
                       ? Icons.favorite
                       : Icons.favorite_border,
-                  color: controller.favoriteSongs.contains(currentSong.id)
+                  color: controller.isFavorite()
                       ? Colors.red
                       : Colors.white,
                 ),
