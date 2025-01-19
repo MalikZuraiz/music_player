@@ -73,4 +73,15 @@ class HomeScreenController extends GetxController {
       },
     );
   }
+  void onFavSongTap(int index) {
+    if (index < 0 || index >= songDataController.favoriteSongs.length) return;
+
+    Get.toNamed(
+      '/player-screen',
+      arguments: {
+        'allSongs': songDataController.favoriteSongs,
+        'id': index,
+      },
+    );
+  }
 }

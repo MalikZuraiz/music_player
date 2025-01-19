@@ -80,53 +80,57 @@ class HomeScreenView extends GetView<HomeScreenController> {
               itemCount: controller.songDataController.favoriteSongs.length,
               itemBuilder: (context, index) {
                 final song = controller.songDataController.favoriteSongs[index];
-                return Container(
-                  width: 160,
-                  margin: const EdgeInsets.only(right: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: QueryArtworkWidget(
-                          id: song.id,
-                          type: ArtworkType.AUDIO,
-                          nullArtworkWidget: Container(
-                            height: 120,
-                            color: Colors.grey[900],
-                            child: const Icon(
-                              Icons.music_note,
-                              size: 50,
-                              color: Colors.white54,
+                return GestureDetector(
+                  child: Container(
+                    width: 160,
+                    margin: const EdgeInsets.only(right: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: QueryArtworkWidget(
+                            id: song.id,
+                            type: ArtworkType.AUDIO,
+                            nullArtworkWidget: Container(
+                              height: 120,
+                              color: Colors.grey[900],
+                              child: const Icon(
+                                Icons.music_note,
+                                size: 50,
+                                color: Colors.white54,
+                              ),
                             ),
+                            artworkWidth: 160,
+                            artworkHeight: 120,
+                            artworkFit: BoxFit.cover,
                           ),
-                          artworkWidth: 160,
-                          artworkHeight: 120,
-                          artworkFit: BoxFit.cover,
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        song.title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
+                        const SizedBox(height: 8),
+                        Text(
+                          song.title,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        song.artist ?? 'Unknown Artist',
-                        style: TextStyle(
-                          color: Colors.grey[400],
-                          fontSize: 12,
+                        const SizedBox(height: 4),
+                        Text(
+                          song.artist ?? 'Unknown Artist',
+                          style: TextStyle(
+                            color: Colors.grey[400],
+                            fontSize: 12,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                  onTap: () => controller.onFavSongTap(index),
+
                 );
               },
             ),
@@ -140,13 +144,22 @@ class HomeScreenView extends GetView<HomeScreenController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'All Songs',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,  
+          children: [
+            Text(
+              'All Songs',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            Obx(() => Text(
+                  '${controller.searchResults.length} songs',
+                  style: const TextStyle(color: Colors.grey),
+                )),
+          ],
         ),
         const SizedBox(height: 16),
         Obx(() {
@@ -165,8 +178,6 @@ class HomeScreenView extends GetView<HomeScreenController> {
             itemCount: controller.searchResults.length,
             itemBuilder: (context, index) {
               final song = controller.searchResults[index];
-              final isFavorite = controller.songDataController.isFavorite(song.id);
-
               return ListTile(
                 leading: QueryArtworkWidget(
                   id: song.id,
