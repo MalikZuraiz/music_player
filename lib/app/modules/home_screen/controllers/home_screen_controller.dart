@@ -26,13 +26,13 @@ class HomeScreenController extends GetxController {
       favoriteIds.value = favoritesList
           .map((e) => int.parse(e))
           .toList(); // Convert the string list back to integers
-      log("Favorite Songs Loaded: $favoriteIds  and all songs ${songDataController.allSongs} and search results ${searchResults.value.length}");
+      log("Favorite Songs Loaded: $favoriteIds  and all songs ${songDataController.allSongs.length} and search results ${searchResults.value.length}");
 
       // Now, filter the allSongs list based on the favoriteIds
       favoritesongs.value = songDataController.allSongs
           .where((song) => favoriteIds.contains(song.id))
           .toList(); // Filter songs that are in the favoriteIds list
-      log("Favorite Songs List: $favoritesongs");
+      log("Favorite Songs List: ${favoritesongs.length}");
     }
   }
 
