@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get.dart';
 import 'package:music_player/app/routes/app_pages.dart';
+import 'package:music_player/app/service/song_data_controller.dart';
 
 void main() {
+  final SongDataController songDataController = Get.put(SongDataController());
+  songDataController.fetchSongs();
   runApp(const MainApp());
 }
 

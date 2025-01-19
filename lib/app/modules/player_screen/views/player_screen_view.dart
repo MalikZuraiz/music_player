@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import '../controllers/player_screen_controller.dart';
 
 class PlayerScreenView extends GetView<PlayerScreenController> {
@@ -49,17 +50,19 @@ class PlayerScreenView extends GetView<PlayerScreenController> {
   }
 
   Widget _buildArtwork() {
-    return Container(
-      width: Get.width * 0.85,
-      height: Get.width * 0.85,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        image: const DecorationImage(
-          image: AssetImage('assets/2.png'), // Add your artwork
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
+    return Obx(() {
+      final currentSong = controller.allSongs[controller.songIndex.value];
+      return QueryArtworkWidget(
+        id: currentSong.id,
+        artworkBorder: BorderRadius.circular(12),
+        type: ArtworkType.AUDIO,
+        nullArtworkWidget:
+            const Icon(Icons.music_note, size: 320, color: Colors.white),
+        artworkWidth: Get.width * 0.8,
+        artworkHeight: Get.height * 0.4,
+        artworkFit: BoxFit.cover,
+      );
+    });
   }
 
   Widget _buildSongInfo() {
@@ -71,29 +74,53 @@ class PlayerScreenView extends GetView<PlayerScreenController> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'You Right',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                Obx(() {
+                  final currentSong =
+                      controller.allSongs[controller.songIndex.value];
+                  return Text(
+                    currentSong.title ?? "Unknown Title",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 2, // Limit to two lines
+                    overflow: TextOverflow
+                        .ellipsis, // Add ellipsis when text overflows
+                  );
+                }),
                 const SizedBox(height: 4),
-                Text(
-                  'Doja Cat, The Weeknd',
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.7),
-                    fontSize: 16,
-                  ),
-                ),
+                Obx(() {
+                  final currentSong =
+                      controller.allSongs[controller.songIndex.value];
+                  return Text(
+                    currentSong.artist ?? "Unknown Artist",
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.7),
+                      fontSize: 15,
+                    ),
+                    maxLines: 2, // Limit to two lines
+                    overflow: TextOverflow
+                        .ellipsis, // Add ellipsis when text overflows
+                  );
+                }),
               ],
             ),
-            IconButton(
-              icon: const Icon(Icons.favorite_border),
-              color: Colors.white,
-              onPressed: () {},
-            ),
+            Obx(() {
+              final currentSong =
+                  controller.allSongs[controller.songIndex.value];
+              return IconButton(
+                icon: Icon(
+                  controller.favoriteSongs.contains(currentSong.id)
+                      ? Icons.favorite
+                      : Icons.favorite_border,
+                  color: controller.favoriteSongs.contains(currentSong.id)
+                      ? Colors.red
+                      : Colors.white,
+                ),
+                onPressed: () => controller.toggleFavorite(),
+              );
+            }),
           ],
         ),
       ],
@@ -114,11 +141,11 @@ class PlayerScreenView extends GetView<PlayerScreenController> {
             overlayColor: Colors.white.withOpacity(0.1),
           ),
           child: Obx(() => Slider(
-            value: controller.currentPosition.value,
-            min: 0,
-            max: controller.totalDuration.value,
-            onChanged: (value) => controller.seekTo(value),
-          )),
+                value: controller.currentPosition.value,
+                min: 0,
+                max: controller.totalDuration.value,
+                onChanged: (value) => controller.seekTo(value),
+              )),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -126,19 +153,19 @@ class PlayerScreenView extends GetView<PlayerScreenController> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Obx(() => Text(
-                _formatDuration(controller.currentPosition.value),
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.7),
-                  fontSize: 12,
-                ),
-              )),
+                    _formatDuration(controller.currentPosition.value),
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.7),
+                      fontSize: 12,
+                    ),
+                  )),
               Obx(() => Text(
-                _formatDuration(controller.totalDuration.value),
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.7),
-                  fontSize: 12,
-                ),
-              )),
+                    _formatDuration(controller.totalDuration.value),
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.7),
+                      fontSize: 12,
+                    ),
+                  )),
             ],
           ),
         ),
@@ -170,8 +197,8 @@ class PlayerScreenView extends GetView<PlayerScreenController> {
           ),
           child: IconButton(
             icon: Obx(() => Icon(
-              controller.isPlaying.value ? Icons.pause : Icons.play_arrow,
-            )),
+                  controller.isPlaying.value ? Icons.pause : Icons.play_arrow,
+                )),
             color: Colors.white,
             iconSize: 35,
             onPressed: () => controller.togglePlay(),
