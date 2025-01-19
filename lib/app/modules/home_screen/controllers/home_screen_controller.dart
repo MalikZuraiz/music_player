@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:get/get.dart';
+import 'package:music_player/app/service/song_data_controller.dart' as musicPlayer;
 import 'package:music_player/app/service/song_data_controller.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -18,7 +19,6 @@ class HomeScreenController extends GetxController {
     ever(songDataController.allSongs, (_) {
       _updateSearchResults();
     });
-
     initializeController();
   }
 
@@ -83,5 +83,8 @@ class HomeScreenController extends GetxController {
         'id': index,
       },
     );
+  }
+  void onPlaylistTap(musicPlayer.PlaylistModel playlist, List<SongModel> songs) {
+    Get.toNamed('/playlist-screen', arguments: [playlist, songs]);
   }
 }

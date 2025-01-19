@@ -5,10 +5,10 @@ class SongListView extends StatelessWidget {
   final Function(String) onSongTap;
 
   const SongListView({
-    Key? key,
+    super.key,
     required this.songs,
     required this.onSongTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class SongListView extends StatelessWidget {
       onTap: onTap,
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(8),
-        child: Container(
+        child: SizedBox(
           width: 50,
           child: Image.asset(
             imagePath,
