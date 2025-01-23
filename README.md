@@ -35,8 +35,20 @@ A feature-packed, elegant music player app developed with **Flutter**! Built wit
 
 ---
 
-## 🎥 Demo Video
-[Insert a link to your demo video here]
+🖼️ Screenshots
+<table>
+  <tr>
+    <td>
+      <img src="assets/Screenshot_20250124-021510.png" alt="Home Screen" width="300">
+    </td>
+    <td>
+      <img src="/assets/Screenshot_20250124-021550.png" alt="Player Screen" width="300">
+    </td>
+    <td>
+      <img src="/assets/Screenshot_20250124-021615.png" alt="Playlist Screen" width="300">
+    </td>
+  </tr>
+</table>
 
 ---
 
@@ -45,12 +57,12 @@ A feature-packed, elegant music player app developed with **Flutter**! Built wit
 lib/
 ├── app/
 │   ├── modules/
-│   │   ├── playlist_screen/
-│   │   │   ├── controllers/
-│   │   │   └── views/
-│   ├── service/
-│   └── widgets/
-├── main.dart
+│   │   ├── home/
+│   │   ├── player/
+│   │   ├── playlists/
+│   ├── services/
+│   └── utils/
+└── main.dart
 ```
 - **Modules**: Contains the MVC structure for each screen.
 - **Service**: Handles data and state management logic.
@@ -93,27 +105,13 @@ lib/
 - Enhanced proficiency in handling audio and querying libraries using **Just Audio** and **OnAudioQuery**.
 
 ---
-
-## 🤝 Contributing
-Contributions, issues, and feature requests are welcome! Feel free to fork the repository and submit a pull request.
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a pull request
-
 ---
 
-## 📄 License
-This project is licensed under the **MIT License**.
-
----
-
-## 📬 Contact
-- **Developer**: [Your Name]
-- **Email**: [Your Email]
-- **LinkedIn**: [Your LinkedIn Profile]
+## 📧 Contact
+- Zuraiz NAyyar
+- Email: malikzuraiz1214@gmail.com
+- LinkedIn: <a href="https://www.linkedin.com/in/malik-zuraiz-nayyar-3815a8227/">Zuraiz Nayyar</a>
+- GitHub: <a href="https://github.com/MalikZuraiz">MalikZuraiz</a>
 
 Feel free to reach out for feedback, suggestions, or just to connect!
 
