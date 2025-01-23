@@ -5,10 +5,10 @@ class FeaturedPlaylistsView extends StatelessWidget {
   final Function(String) onPlaylistTap;
 
   const FeaturedPlaylistsView({
-    Key? key,
+    super.key,
     required this.albums,
     required this.onPlaylistTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class FeaturedPlaylistsView extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(12)),
-              child: Container(
+              child: SizedBox(
                 height: 160,
                 width: 180,
                 child: Image.asset(
